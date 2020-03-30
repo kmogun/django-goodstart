@@ -11,6 +11,7 @@ class UserManager(auth_models.BaseUserManager):
         if not email:
             raise ValueError('Users must have an email address')
         user = self.model(email=self.normalize_email(email))
+        user.username = username
         user.first_name = first_name
         user.last_name = last_name
         user.dob = dob

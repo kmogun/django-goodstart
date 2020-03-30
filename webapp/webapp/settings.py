@@ -28,7 +28,7 @@ SECRET_KEY = 'gp-4wcb&(kyxwvcgqzmn(soylzle1pptaaz!b2wx4r4j%on537'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.48', '127.0.0.1']
 
 
 # Application definition
@@ -39,11 +39,49 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'debug_toolbar',
     'users',
     'simplepages',
+
+    # allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.instagram',
 ]
+
+# Django-allauth
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIALACCOUNT_PROVIDERS = \
+    {'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email','public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'es_ES',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.4'}}
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -143,3 +181,20 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
+
+# Django-allauth
+SITE_ID = 1 # 'django.contrib.sites'
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+#facebook
+SOCIAL_AUTH_FACEBOOK_KEY = 'secret!'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET ='secret!' #app key
+
+LOGIN_REDIRECT_URL = "/" 

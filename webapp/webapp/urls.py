@@ -19,6 +19,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls), # Admin Django
+    path('accounts/',include('allauth.urls')), # AllAuth URLS
     path('', include("simplepages.urls")), # Module: SimplePages
 ]
 
